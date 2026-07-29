@@ -1,36 +1,47 @@
-### 1. 명제 논리 (Propositional Logic)
-* 부정 (Negation): $\neg P$
-* 논리곱 (Conjunction): $P \land Q$
-* 논리합 (Disjunction): $P \lor Q$
-* 조건/함의 (Implication): $P \rightarrow Q$
-* 쌍방조건 (Biconditional): $P \leftrightarrow Q$
+# 명제 논리 및 술어 논리 (Propositional & Predicate Logic)
 
-### 2. 술어 논리 및 술어 논리식 (Predicate Logic)
-* 술어 논리식 기본 형태: $P(x)$
-* 전칭 양화사 (Universal Quantifier): $\forall x P(x)$
-* 존재 양화사 (Existential Quantifier): $\exists x P(x)$
+## 1. 명제·술어 논리의 정의 및 배경
 
-### 3. 논리식의 주요 동치 관계 (Logical Equivalences)
-* 드모르간의 법칙 (De Morgan's Laws):
-  * $\neg(P \land Q) \equiv \neg P \lor \neg Q$
-  * $\neg(P \lor Q) \equiv \neg P \land \neg Q$
-* 조건문 동치 (Implication Elimination):
-  * $P \rightarrow Q \equiv \neg P \lor Q$
-* 대우 법칙 (Contraposition):
-  * $P \rightarrow Q \equiv \neg Q \rightarrow \neg P$
-* 양화사 부정 법칙:
-  * $\neg \forall x P(x) \equiv \exists x \neg P(x)$
-  * $\neg \exists x P(x) \equiv \forall x \neg P(x)$
+- **정의**: 명제 논리는 참·거짓을 판별할 수 있는 명제를 논리 연산자로 결합하는 형식 체계이며, 술어 논리는 대상의 속성·관계를 술어와 양화사로 표현하여 표현력을 확장한 형식 체계임.
+- **배경/필요성**:
+  - 자연어의 모호성을 배제하고 지식을 정형화하여 추론에 활용할 필요가 있음.
+  - 명제 논리만으로는 개별 대상·관계 표현에 한계가 있어 술어 논리가 요구됨.
+  - 자동 추론·정리 증명을 위해 논리식을 표준형으로 변환할 필요가 있음.
 
-### 4. 논리곱 표준형 변환 (Conjunctive Normal Form, CNF)
-1. 함의 기호 제거: $P \rightarrow Q \equiv \neg P \lor Q$
-2. 부정 기호 이동 (드모르간 법칙 적용): $\neg(P \land Q) \equiv \neg P \lor \neg Q$
-3. 분배법칙 적용 ($\lor$를 $\land$ 내부로 전개): $P \lor (Q \land R) \equiv (P \lor Q) \land (P \lor R)$
-* 최종 형태 예시: $(A \lor \neg B) \land (B \lor C)$
+## 2. 명제·술어 논리의 아키텍처 및 핵심 기술 요소
 
-### 5. 스콜렘 표준형 변환 (Skolem Normal Form)
-* 앞에 전칭 양화사가 없는 존재 양화사 제거 (스콜렘 상수 대체):
-  * $\exists x P(x) \Rightarrow P(c)$
-* 앞에 전칭 양화사가 있는 존재 양화사 제거 (스콜렘 함수 대체):
-  * $\forall x \exists y P(x, y) \Rightarrow \forall x P(x, f(x))$
-  * $\forall x \forall y \exists z P(x, y, z) \Rightarrow \forall x \forall y P(x, y, g(x, y))$
+### 가. 개념도/메커니즘 (Concept Diagram)
+
+- **메커니즘 설명**: 명제·술어를 연산자와 양화사로 결합해 논리식을 구성하고, 동치 법칙을 적용해 표준형(CNF·스콜렘)으로 변환하여 기계적 추론(예: 분해 원리)에 활용함.
+
+```
+[명제/술어] -> [연산자·양화사 결합] -> [동치 변환] -> [표준형(CNF/Skolem)] -> [자동 추론]
+```
+
+- **명제 논리 연산자**: 부정 $\neg P$, 논리곱 $P \land Q$, 논리합 $P \lor Q$, 함의 $P \rightarrow Q$, 쌍방조건 $P \leftrightarrow Q$
+- **술어 논리 요소**: 술어식 $P(x)$, 전칭 양화사 $\forall x P(x)$, 존재 양화사 $\exists x P(x)$
+
+### 나. 핵심 구성 요소 및 기술 (Key Components)
+
+| 구분 | 핵심 법칙/변환 | 상세 설명 | 비고/사례 |
+| :--- | :--- | :--- | :--- |
+| 동치 법칙 | 드모르간 | $\neg(P \land Q) \equiv \neg P \lor \neg Q$, $\neg(P \lor Q) \equiv \neg P \land \neg Q$ | 부정 이동 |
+| 동치 법칙 | 함의 제거 | $P \rightarrow Q \equiv \neg P \lor Q$ | 함의 기호 제거 |
+| 동치 법칙 | 대우 | $P \rightarrow Q \equiv \neg Q \rightarrow \neg P$ | 조건문 변환 |
+| 동치 법칙 | 양화사 부정 | $\neg \forall x P(x) \equiv \exists x \neg P(x)$, $\neg \exists x P(x) \equiv \forall x \neg P(x)$ | 양화사 이동 |
+| 표준형 | CNF | 함의 제거 → 드모르간 → 분배법칙 적용, 예: $(A \lor \neg B) \land (B \lor C)$ | 논리곱 표준형 |
+| 표준형 | 스콜렘 | $\exists x P(x) \Rightarrow P(c)$(상수), $\forall x \exists y P(x,y) \Rightarrow \forall x P(x, f(x))$(함수) | 존재 양화사 제거 |
+
+## 3. 명제 논리와 술어 논리 비교 분석
+
+| 항목 | 명제 논리 (Propositional) | 술어 논리 (Predicate) |
+| :--- | :--- | :--- |
+| **개념** | 참·거짓 명제의 논리 결합 | 대상의 속성·관계를 술어·양화사로 표현 |
+| **주요 특징** | 양화사 없음 | 전칭·존재 양화사 지원 |
+| **장단점** | 단순·판정 용이 / 표현력 제한 | 표현력 높음 / 추론 복잡도 증가 |
+| **적용 분야** | 논리 회로, 진리표 | 지식 표현, 자동 정리 증명 |
+
+## 4. 정보관리기술사 관점의 활용 방안 및 향후 전망 (Insight)
+
+- **도입/활용 시 고려사항**: 표준형 변환 순서(함의 제거 → 부정 이동 → 분배)를 준수해야 오류 없는 추론이 가능함.
+- **향후 전망/기술 트렌드**: 규칙 기반 추론과 지식 그래프·온톨로지의 정형 표현 기반으로 활용되며, 뉴로-심볼릭(Neuro-Symbolic) AI로 확장됨.
